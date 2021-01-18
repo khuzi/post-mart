@@ -1,65 +1,151 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import React, { useContext } from "react";
+import Head from "next/head";
 
-export default function Home() {
+import { useQuery } from "react-query";
+
+import PostContext from "../context/context";
+import { ADD_POST, REMOVE_POST } from "../context/reducer";
+
+export default function Home({ pre_data }) {
+  const { state, dispatch } = useContext(PostContext);
+
+  const [page, setPage] = React.useState(25);
+
+  const { isLoading, error, data } = useQuery(
+    ["posts", page],
+    async () => {
+      const pg = page;
+      return fetch("https://jsonplaceholder.typicode.com/posts").then((res) =>
+        res
+          .json()
+          .then((posts) =>
+            posts.filter((post) => post.id >= pg - 25 && post.id <= pg)
+          )
+      );
+    },
+
+    { initialData: pre_data }
+  );
+
+  if (isLoading) {
+    return <h1>Loading...</h1>;
+  }
+  if (error) {
+    return <h1>An error has occurred: {error.message} </h1>;
+  }
+
+  const addPostToCart = (post) => {
+    setTimeout(() => {
+      dispatch({ type: ADD_POST, post: post });
+    }, 700);
+  };
+
+  const removePostFromCart = (postId) => {
+    setTimeout(() => {
+      dispatch({ type: REMOVE_POST, postId: postId });
+    }, 700);
+  };
+
   return (
-    <div className={styles.container}>
+    <>
       <Head>
-        <title>Create Next App</title>
+        <title>UseContsext with UseReducer</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+      <div style={{ margin: "2rem 0" }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexWrap: "wrap",
+          }}
         >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
-    </div>
-  )
+          {data?.map((post) => (
+            <div
+              key={post.id}
+              style={{
+                width: "280px",
+                border: "1px solid #ccc",
+                borderRadius: "5px",
+                padding: "1rem",
+                margin: "0 1rem 1rem 0rem",
+                height: "210px",
+              }}
+            >
+              <h3 style={{ marginBottom: "1rem", textTransform: "capitalize" }}>
+                <span>{post.id}</span> {post.title.substr(0, 18) + "..."}
+              </h3>
+              <p>{post.body.substr(0, 95) + " ..."}</p>
+              <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                <button
+                  style={{
+                    margin: "0.5rem 0",
+                    padding: "0.5rem",
+                    color: "#fff",
+                    background: "teal",
+                    borderRadius: "5px",
+                    border: "none",
+                    outline: "none",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => addPostToCart(post)}
+                >
+                  Buy Post
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <button
+            style={{
+              margin: "0.5rem 0",
+              padding: "0.5rem",
+              color: "#fff",
+              background: "teal",
+              borderRadius: "5px",
+              border: "none",
+              outline: "none",
+              cursor: "pointer",
+            }}
+            onClick={() => {
+              if (page > 25 && page <= 100) {
+                setPage(page - 25);
+              }
+            }}
+          >
+            Back
+          </button>
+          <button
+            style={{
+              margin: "0.5rem 0",
+              padding: "0.5rem",
+              color: "#fff",
+              background: "teal",
+              borderRadius: "5px",
+              border: "none",
+              outline: "none",
+              cursor: "pointer",
+            }}
+            onClick={() => {
+              if (page >= 25 && page < 100) setPage(page + 25);
+            }}
+          >
+            Next
+          </button>
+        </div>
+      </div>
+    </>
+  );
+}
+
+export async function getStaticProps() {
+  const res = await fetch("https://jsonplaceholder.typicode.com/posts");
+  const data = await res.json();
+  return {
+    props: {
+      pre_data: data,
+    },
+  };
 }
