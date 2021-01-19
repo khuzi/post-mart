@@ -10,6 +10,8 @@ export function Cart({ data, onRemovePost }) {
         position: "absolute",
         right: "5px",
         top: "45px",
+        height: "200px",
+        overflow: "auto",
       }}
     >
       {data.length > 0 ? (
@@ -20,13 +22,16 @@ export function Cart({ data, onRemovePost }) {
               display: "flex",
               borderBottom: "1px solid #bbb",
               justifyContent: "space-between",
+              alignItems: "center",
+              paddingLeft: "0.5rem",
             }}
           >
             <div
               style={{
                 display: "flex",
                 color: "#000",
-                padding: "0.5rem 0",
+                padding: "1rem 0",
+                alignItems: "center",
               }}
             >
               <h4 style={{ margin: "0 0.5rem" }}>{quantity}</h4>
