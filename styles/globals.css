@@ -9,3 +9,9 @@
 body {
   font-family: "Yusei Magic", sans-serif;
 }
+
+@media (max-width: 599px) {
+  .post_box {
+    margin: 0.5rem auto !important;
+  }
+}

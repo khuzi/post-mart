@@ -47,11 +47,13 @@ export default function Home({ pre_data }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div style={{ margin: "2rem 0" }}>
+        <br />
+        <br />
         <div
           style={{
             display: "flex",
             alignItems: "center",
-            justifyContent: "flex-start",
+            justifyContent: "center",
             flexWrap: "wrap",
           }}
         >
@@ -59,13 +61,14 @@ export default function Home({ pre_data }) {
             <div
               key={post.id}
               style={{
-                width: "280px",
+                width: "270px",
                 border: "1px solid #ccc",
                 borderRadius: "5px",
                 padding: "1rem",
-                margin: "0 1rem 1rem auto",
+                margin: "0 1rem 1rem 0",
                 height: "210px",
               }}
+              className="post_box"
             >
               <h3 style={{ marginBottom: "1rem", textTransform: "capitalize" }}>
                 <span>{post.id}</span> {post.title.substr(0, 18) + "..."}

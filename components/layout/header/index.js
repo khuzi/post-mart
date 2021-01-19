@@ -28,7 +28,8 @@ export function Header() {
         justifyContent: "space-between",
         color: "#fff",
         alignItems: "center",
-        position: "relative",
+        position: "fixed",
+        marginTop: "-2rem",
       }}
     >
       <div style={{ margin: "0 1rem", cursor: "pointer" }}>
