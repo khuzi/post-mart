@@ -1,6 +1,6 @@
 import React from "react";
 
-export function Cart({ data }) {
+export function Cart({ data, onRemovePost }) {
   return (
     <div
       style={{
@@ -31,7 +31,10 @@ export function Cart({ data }) {
             <h4 style={{ margin: "0 0.5rem" }}>{quantity}</h4>
             <h4>{title.substr(0, 15) + "..."}</h4>
           </div>
-          <div style={{ margin: "0 1rem", cursor: "pointer" }}>
+          <div
+            style={{ margin: "0 1rem", cursor: "pointer" }}
+            onClick={() => onRemovePost(id)}
+          >
             <h2 style={{ color: "red" }}>x</h2>
           </div>
         </div>

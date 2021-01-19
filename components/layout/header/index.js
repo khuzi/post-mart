@@ -4,12 +4,19 @@ import Link from "next/link";
 import { Cart } from "../../cart";
 
 import PostContext from "../../../context/context";
+import { REMOVE_POST } from "../../../context/reducer";
 
 export function Header() {
   const [showCart, setShowCart] = useState(false);
 
-  const { state } = useContext(PostContext);
+  const { state, dispatch } = useContext(PostContext);
   const { cart } = state;
+
+  const removePostFromCart = (postId) => {
+    setTimeout(() => {
+      dispatch({ type: REMOVE_POST, postId: postId });
+    }, 700);
+  };
 
   return (
     <div
@@ -47,7 +54,7 @@ export function Header() {
           </sup>
         </h3>
       </div>
-      {showCart && <Cart data={cart} />}
+      {showCart && <Cart data={cart} onRemovePost={removePostFromCart} />}
     </div>
   );
 }

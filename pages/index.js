@@ -9,7 +9,7 @@ import { ADD_POST, REMOVE_POST } from "../context/reducer";
 export default function Home({ pre_data }) {
   const { state, dispatch } = useContext(PostContext);
 
-  const [page, setPage] = React.useState(25);
+  const [page, setPage] = React.useState(20);
 
   const { isLoading, error, data } = useQuery(
     ["posts", page],
@@ -19,7 +19,7 @@ export default function Home({ pre_data }) {
         res
           .json()
           .then((posts) =>
-            posts.filter((post) => post.id >= pg - 25 && post.id <= pg)
+            posts.filter((post) => post.id >= pg - 20 && post.id <= pg)
           )
       );
     },
@@ -40,12 +40,6 @@ export default function Home({ pre_data }) {
     }, 700);
   };
 
-  const removePostFromCart = (postId) => {
-    setTimeout(() => {
-      dispatch({ type: REMOVE_POST, postId: postId });
-    }, 700);
-  };
-
   return (
     <>
       <Head>
@@ -57,7 +51,7 @@ export default function Home({ pre_data }) {
           style={{
             display: "flex",
             alignItems: "center",
-            justifyContent: "center",
+            justifyContent: "flex-start",
             flexWrap: "wrap",
           }}
         >
@@ -69,7 +63,7 @@ export default function Home({ pre_data }) {
                 border: "1px solid #ccc",
                 borderRadius: "5px",
                 padding: "1rem",
-                margin: "0 1rem 1rem 0rem",
+                margin: "0 1rem 1rem auto",
                 height: "210px",
               }}
             >
@@ -97,11 +91,17 @@ export default function Home({ pre_data }) {
             </div>
           ))}
         </div>
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "2rem",
+          }}
+        >
           <button
             style={{
-              margin: "0.5rem 0",
-              padding: "0.5rem",
+              margin: "0.5rem 1rem",
+              padding: "0.5rem 2rem",
               color: "#fff",
               background: "teal",
               borderRadius: "5px",
@@ -110,8 +110,8 @@ export default function Home({ pre_data }) {
               cursor: "pointer",
             }}
             onClick={() => {
-              if (page > 25 && page <= 100) {
-                setPage(page - 25);
+              if (page > 20 && page <= 100) {
+                setPage(page - 20);
               }
             }}
           >
@@ -119,8 +119,8 @@ export default function Home({ pre_data }) {
           </button>
           <button
             style={{
-              margin: "0.5rem 0",
-              padding: "0.5rem",
+              margin: "0.5rem 1rem",
+              padding: "0.5rem 2rem",
               color: "#fff",
               background: "teal",
               borderRadius: "5px",
@@ -129,7 +129,7 @@ export default function Home({ pre_data }) {
               cursor: "pointer",
             }}
             onClick={() => {
-              if (page >= 25 && page < 100) setPage(page + 25);
+              if (page >= 20 && page < 100) setPage(page + 20);
             }}
           >
             Next
