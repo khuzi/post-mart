@@ -43,7 +43,7 @@ export default function Home({ pre_data }) {
   return (
     <>
       <Head>
-        <title>UseContsext with UseReducer</title>
+        <title>Post Mart</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div style={{ margin: "2rem 0" }}>
